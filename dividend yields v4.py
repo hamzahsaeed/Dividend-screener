@@ -42,12 +42,12 @@ start_date="2015-11-01"
 end_date="2020-12-31"
 
 
-
+#div_threshold (in %) code will flag if div yield at t is > div_threshold. Will pick the stock if div_threshold was sustained for pick_threshold of the time.
+# cap_threshold chooses stock if price remains above moving average for atleast cap_threshold (%) of the time.
 div_threshold=7
 pick_threshold=0.76
-stock_threshold=0.5
-cap_threshold=0
-
+cap_threshold=0.2
+# Frequency window for MA calculation
 frequency_stock=30
 
 pp = PdfPages('dividends above 7 v4.pdf')
@@ -95,38 +95,6 @@ for ticker in master_tickers:
         exceptions.append(ticker)
 pp.close()
 
-
-
-
-# Directory for files for correlation
-os.chdir(r"C:\Users\Hamzah\Documents\Python files")
-wb = xlrd.open_workbook(r'C:\Users\Hamzah\Documents\Python files\possible tickers.xlsx')
-
-wb_tickers=wb.sheet_by_index(0)
-N=wb_tickers.nrows
-pd.set_option('display.max_columns', None)  
-
-
-stocks=[]
-for i in range(1,N):
-    x=wb_tickers.row_values(i)[0]
-    stocks.append(x)
-
-stocks_data=pd.DataFrame()
-
-for stock in stocks:
-    data=yf.download(stock,start_date,end_date)
-    data=data.Close
-    stocks_data[stock]=data
-
-
-buys=['MMLP','CSQ']
-po=pd.DataFrame()
-for buy in buys:
-    data=yf.download(buy,start_date,end_date)
-    data=data.Close
-    po[buy]=data
-    
     
 
     
